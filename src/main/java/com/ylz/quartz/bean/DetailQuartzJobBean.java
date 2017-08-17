@@ -15,10 +15,6 @@ import org.springframework.scheduling.quartz.QuartzJobBean;
  * 定时任务代理类
  * <功能详细描述>
  * 
- * @author  陈超
- * @version  [版本号, 2015-6-8]
- * @see  [相关类/方法]
- * @since  [产品/模块版本]
  */
 @DisallowConcurrentExecution// 不允许并发执行  
 public class DetailQuartzJobBean extends QuartzJobBean

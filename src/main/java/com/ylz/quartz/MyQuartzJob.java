@@ -14,7 +14,6 @@ import org.apache.log4j.Logger;
 import org.quartz.JobExecutionException;
 import org.springframework.stereotype.Component;
 
-
   
 @Component(value = "MyQuartzJob")
 public class MyQuartzJob{
