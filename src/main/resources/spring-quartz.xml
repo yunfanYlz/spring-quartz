@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+	http://www.springframework.org/schema/aop 
+	http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
+	http://www.springframework.org/schema/tx 
+	http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
+	http://www.springframework.org/schema/context 
+	http://www.springframework.org/schema/context/spring-context-3.1.xsd" >
+    
+    <context:component-scan base-package="com.ylz.quartz" />  
+    
+	<!--  定时任务  --> 
+	<bean id="myQuartzJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean"> 
+		<property name="jobClass"> 
+			<!-- 上面的任务代理类 --> 
+			<value>com.ylz.quartz.bean.DetailQuartzJobBean</value> 
+		</property> 
+		<property name="jobDataAsMap"> 
+			<map> 
+				<!-- 实际的任务的Bean name，填上EventMonitorService的Bean name --> 
+				<entry key="targetObject" value="MyQuartzJob" /> 
+				<!-- 执行Bean中的哪个方法 --> 
+				<entry key="targetMethod" value="execute" /> 
+			</map> 
+		</property> 
+		<property name="durability" value="true"></property> 
+	</bean>
+	
+	<!-- 定时任务Trigger  --> 
+	<bean id="myQuartzJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail"> 
+			<!-- 任务代理Bean name --> 
+			<ref bean="myQuartzJob" /> 
+		</property> 
+		<property name="cronExpression">
+			<!-- 配置表达式，这里表示凌晨2点30分分钟执行  -->
+			<value>0 * * * * ?</value>
+		</property> 
+	</bean>
+	
+	<!-- 任务调度入口 --> 
+	<bean autowire="no" class="org.springframework.scheduling.quartz.SchedulerFactoryBean"> 
+		<property name="dataSource"> 
+			<ref bean="dataSource" /> 
+		</property> 
+		<!-- 任务列表，可以配置多个任务加入到该List --> 
+		<property name="triggers"> 
+			<list> 
+				<ref bean="myQuartzJobTrigger"/>
+			</list> 
+		</property> 
+		<property name="configLocation" value="classpath:quartz.properties" /> 
+		<property name="applicationContextSchedulerContextKey" value="applicationContext" /> 
+		<property name="startupDelay" value="30" /> 
+		<property name="autoStartup" value="true" /> 
+		<property name="overwriteExistingJobs" value="true" /> 
+	</bean> 
+</beans>
