@@ -23,7 +23,19 @@ public class MyQuartzJob{
 	public void execute() throws JobExecutionException {
 		log.info("MyQuartzJob Start");
 		System.out.println("好无聊啊，每分钟一条");
+		log.info("好无聊啊，每分钟一条");
 		log.info("MyQuartzJob End");
+	}
+	
+	
+	public static void main(String[] args) {
+		for(int i = 1;i <= 100 ; i ++){
+//			int r = (int)( Math.random());
+			System.out.println(Math.random());
+		}
+		
+/*		double d = 9.90;
+		System.out.println((int) d);*/
 	}
 
 }

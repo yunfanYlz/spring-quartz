@@ -46,7 +46,7 @@
 	</bean>
 	
 	<!-- 任务调度入口 --> 
-	<bean autowire="no" class="org.springframework.scheduling.quartz.SchedulerFactoryBean"> 
+	<bean  autowire="no" class="org.springframework.scheduling.quartz.SchedulerFactoryBean"> 
 		<property name="dataSource"> 
 			<ref bean="dataSource" /> 
 		</property> 
